@@ -1,0 +1,47 @@
+﻿@page "/Productos/mas"
+@using Actividad_18.Shared.Models
+@inject NavigationManager navegator
+@inject HttpClient http
+
+
+<h3>Nueva Prenda</h3>
+
+<EditForm Model="prenda" OnValidSubmit="añadir">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="txtNombre" class="form-label">Nombre</label>
+        <InputText id="txtNombre" class="form-control" @bind-Value="prenda.nombre" />
+    </div>
+    <div class="mb-3">
+        <label for="txtTalla" class="form-label">Talla</label>
+        <InputSelect id="txtTalla" class="form-control" @bind-Value="prenda.talla">
+            <option value="">Seleccione una talla</option>
+            <option value="S">S</option>
+            <option value="P">P</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="EG">EG</option>
+        </InputSelect>
+    </div>
+    <div class="mb-3">
+        <label for="numPrecio" class="form-label">Precio</label>
+        <InputNumber id="numPrecio" class="form-control" @bind-Value="prenda.precio" />
+    </div>
+    <div class="mb-3">
+        <label for="txtMedidas" class="form-label">Medidas</label>
+        <InputText id="txtMedidas" class="form-control" @bind-Value="prenda.medidas" />
+    </div>
+    <button type="submit" class="btn btn-primary">Añadir</button>
+</EditForm>
+
+
+@code {
+    private Productos prenda = new Productos();
+    private async void añadir()
+    {
+        await http.PostAsJsonAsync("api/Productos", prenda);
+        navegator.NavigateTo("/Productos");
+    }
+}

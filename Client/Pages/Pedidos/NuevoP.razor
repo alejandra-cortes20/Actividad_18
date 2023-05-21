@@ -1,0 +1,39 @@
+﻿@page "/Pedidos/mas"
+@using Actividad_18.Shared.Models
+@inject NavigationManager navegator
+@inject HttpClient http
+
+
+<h3>Nuevo Pedido</h3>
+
+<EditForm Model="pedido" OnValidSubmit="añadir">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="txtNombre" class="form-label">Nombre</label>
+        <InputText id="txtNombre" class="form-control" @bind-Value="pedido.Nombre_cliente" />
+    </div>
+    <div class="mb-3">
+        <label for="txtDireccion" class="form-label">Direccion</label>
+        <InputText id="txtDireccion" class="form-control" @bind-Value="pedido.DireccionEntrega" />
+    </div>
+    <div class="mb-3">
+        <label for="txtEstado" class="form-label">Estado del Pedido</label>
+        <InputText id="txtEstado" class="form-control" @bind-Value="pedido.Estado" />
+    </div>
+    <div class="mb-3">
+        <label for="txtEmail" class="form-label">Id del Cliente</label>
+        <InputNumber id="txtEmail" class="form-control" @bind-Value="pedido.ClientesId" />
+    </div>
+    <button type="submit" class="btn btn-primary">Añadir</button>
+</EditForm>
+
+
+@code {
+    private Pedidos pedido = new Pedidos();
+    private async void añadir()
+    {
+        await http.PostAsJsonAsync("api/Pedidos", pedido);
+        navegator.NavigateTo("/LPedidos");
+    }
+}
